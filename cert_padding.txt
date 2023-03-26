@@ -1,0 +1,25 @@
+$KeyPath1 = "HKLM:\Software\Microsoft\Cryptography\Wintrust\Config"
+$ValueName = "EnableCertPaddingCheck"
+$ValueData = "1"
+try{
+     Get-ItemProperty -Path $KeyPath1 -Name $valueName -ErrorAction Stop
+}
+catch [System.Management.Automation.ItemNotFoundException] {
+     New-Item -Path $KeyPath1 -Force
+     New-ItemProperty -Path $KeyPath1 -Name $ValueName -Value $ValueData -Force
+}
+catch {
+     New-ItemProperty -Path $KeyPath1 -Name $ValueName -Value $ValueData -Type String -Force
+}
+
+$KeyPath2 = "HKLM:\Software\Wow6432Node\Microsoft\Cryptography\Wintrust\Config"
+try{
+     Get-ItemProperty -Path $KeyPath2 -Name $valueName -ErrorAction Stop
+}
+catch [System.Management.Automation.ItemNotFoundException] {
+     New-Item -Path $KeyPath2 -Force
+     New-ItemProperty -Path $KeyPath2 -Name $ValueName -Value $ValueData -Force
+}
+catch {
+     New-ItemProperty -Path $KeyPath2 -Name $ValueName -Value $ValueData -Type String -Force
+} 
